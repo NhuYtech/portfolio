@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Modern developer portfolio showcasing projects and technical expertise">
+  <meta name="description" content="Professional developer portfolio with modern design">
   <title>Developer Portfolio - Modern & Professional</title>
 
   <!-- Google Fonts -->
@@ -20,92 +20,96 @@
 </head>
 
 <body>
-  <!-- Background Gradient -->
-  <div class="gradient-bg">
-    <div class="gradient-orb gradient-orb-1"></div>
-    <div class="gradient-orb gradient-orb-2"></div>
-    <div class="gradient-orb gradient-orb-3"></div>
+  <!-- Fixed Background Layer -->
+  <div class="background-layer">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
   </div>
 
-  <!-- Navigation -->
-  <nav class="navbar">
+  <!-- Fixed Navigation -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav-container">
-      <a href="#home" class="nav-logo">Portfolio</a>
-      <ul class="nav-menu">
-        <li><a href="#home" class="nav-link">Home</a></li>
-        <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+      <a href="#home" class="nav-logo" aria-label="Home">Portfolio</a>
+      <ul class="nav-menu" role="tablist">
+        <li role="presentation">
+          <button class="nav-link active" data-view="home" role="tab" aria-selected="true" aria-controls="home-view">
+            Home
+          </button>
+        </li>
+        <li role="presentation">
+          <button class="nav-link" data-view="projects" role="tab" aria-selected="false" aria-controls="projects-view">
+            Projects
+          </button>
+        </li>
+        <li role="presentation">
+          <button class="nav-link" data-view="contact" role="tab" aria-selected="false" aria-controls="contact-view">
+            Contact
+          </button>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <div class="profile-avatar">
-        <div class="avatar-inner">
-          <div class="avatar-gradient"></div>
+  <!-- Content Container (Full Screen, No Scroll) -->
+  <main class="content-container">
+
+    <!-- Home View -->
+    <article id="home-view" class="view active" role="tabpanel" aria-labelledby="home-tab">
+      <div class="view-content">
+        <div class="hero-content">
+          <h1 class="hero-name">
+            <span class="gradient-text">Your Name</span>
+          </h1>
+
+          <p class="hero-title">Full Stack Developer</p>
+
+          <p class="hero-summary">
+            Building elegant solutions with modern technologies.<br>
+            Passionate about creating exceptional digital experiences.
+          </p>
+
+          <div class="skills-grid">
+            <span class="skill-badge">React</span>
+            <span class="skill-badge">TypeScript</span>
+            <span class="skill-badge">Node.js</span>
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">PostgreSQL</span>
+            <span class="skill-badge">AWS</span>
+            <span class="skill-badge">Docker</span>
+            <span class="skill-badge">Kubernetes</span>
+          </div>
+
+          <div class="hero-cta">
+            <button class="btn-primary" data-view="projects">
+              <span>View Projects</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="btn-secondary" data-view="contact">
+              <span>Get in Touch</span>
+            </button>
+          </div>
         </div>
       </div>
+    </article>
 
-      <h1 class="hero-name">
-        <span class="gradient-text">Your Name</span>
-      </h1>
+    <!-- Projects View -->
+    <article id="projects-view" class="view" role="tabpanel" aria-labelledby="projects-tab">
+      <div class="view-content">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="gradient-text">Featured Projects</span>
+          </h2>
+          <p class="section-subtitle">Recent work showcasing technical expertise</p>
+        </div>
 
-      <p class="hero-title">Full Stack Developer</p>
-
-      <p class="hero-summary">
-        Building elegant solutions with modern technologies.<br>
-        Passionate about creating exceptional digital experiences.
-      </p>
-
-      <div class="skills-grid">
-        <span class="skill-badge">React</span>
-        <span class="skill-badge">TypeScript</span>
-        <span class="skill-badge">Node.js</span>
-        <span class="skill-badge">Python</span>
-        <span class="skill-badge">Next.js</span>
-        <span class="skill-badge">PostgreSQL</span>
-        <span class="skill-badge">AWS</span>
-        <span class="skill-badge">Docker</span>
-      </div>
-
-      <div class="hero-cta">
-        <a href="#projects" class="btn-primary">
-          <span>View Work</span>
-          <i class="fas fa-arrow-right"></i>
-        </a>
-        <a href="#contact" class="btn-secondary">
-          <span>Get in Touch</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="scroll-hint">
-      <span>Scroll to explore</span>
-      <i class="fas fa-chevron-down"></i>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="projects">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span class="gradient-text">Featured Projects</span>
-        </h2>
-        <p class="section-subtitle">Recent work showcasing technical expertise and creative problem-solving</p>
-      </div>
-
-      <div class="projects-grid">
-        <!-- Project 1 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">01</div>
-          <div class="project-content">
-            <h3 class="project-title">AI-Powered Analytics Platform</h3>
+        <div class="projects-container">
+          <!-- Project 1 -->
+          <div class="project-card">
+            <div class="project-number">01</div>
+            <h3 class="project-title">AI Analytics Platform</h3>
             <p class="project-description">
-              Real-time data visualization dashboard with machine learning insights.
-              Built scalable backend processing 10M+ events daily.
+              Real-time data visualization dashboard with ML insights processing 10M+ events daily.
             </p>
             <div class="project-tech">
               <span class="tech-tag">React</span>
@@ -124,16 +128,13 @@
               </a>
             </div>
           </div>
-        </article>
 
-        <!-- Project 2 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">02</div>
-          <div class="project-content">
+          <!-- Project 2 -->
+          <div class="project-card">
+            <div class="project-number">02</div>
             <h3 class="project-title">Collaborative Code Editor</h3>
             <p class="project-description">
-              Real-time collaborative coding platform with WebSocket integration.
-              Supports multiple languages with syntax highlighting and live sharing.
+              Real-time collaborative coding platform with WebSocket integration and syntax highlighting.
             </p>
             <div class="project-tech">
               <span class="tech-tag">Next.js</span>
@@ -152,16 +153,13 @@
               </a>
             </div>
           </div>
-        </article>
 
-        <!-- Project 3 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">03</div>
-          <div class="project-content">
+          <!-- Project 3 -->
+          <div class="project-card">
+            <div class="project-number">03</div>
             <h3 class="project-title">E-Commerce Microservices</h3>
             <p class="project-description">
-              Scalable microservices architecture handling 50K+ daily transactions.
-              Implemented event-driven design with robust error handling.
+              Scalable microservices architecture handling 50K+ daily transactions with event-driven design.
             </p>
             <div class="project-tech">
               <span class="tech-tag">Node.js</span>
@@ -176,44 +174,13 @@
               </a>
             </div>
           </div>
-        </article>
 
-        <!-- Project 4 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">04</div>
-          <div class="project-content">
-            <h3 class="project-title">Mobile Fitness Tracker</h3>
-            <p class="project-description">
-              Cross-platform mobile app with offline-first architecture.
-              Integrated health APIs and implemented custom workout algorithms.
-            </p>
-            <div class="project-tech">
-              <span class="tech-tag">React Native</span>
-              <span class="tech-tag">TypeScript</span>
-              <span class="tech-tag">Firebase</span>
-              <span class="tech-tag">GraphQL</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-link">
-                <i class="fab fa-github"></i>
-                <span>Code</span>
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">
-                <i class="fas fa-external-link-alt"></i>
-                <span>Demo</span>
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 5 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">05</div>
-          <div class="project-content">
+          <!-- Project 4 -->
+          <div class="project-card">
+            <div class="project-number">04</div>
             <h3 class="project-title">DevOps Automation Suite</h3>
             <p class="project-description">
-              Infrastructure automation reducing deployment time by 70%.
-              Built CI/CD pipelines with comprehensive monitoring and alerting.
+              Infrastructure automation reducing deployment time by 70% with comprehensive monitoring.
             </p>
             <div class="project-tech">
               <span class="tech-tag">Python</span>
@@ -228,83 +195,49 @@
               </a>
             </div>
           </div>
-        </article>
+        </div>
+      </div>
+    </article>
 
-        <!-- Project 6 -->
-        <article class="project-card" data-aos>
-          <div class="project-number">06</div>
-          <div class="project-content">
-            <h3 class="project-title">Blockchain Voting System</h3>
-            <p class="project-description">
-              Secure decentralized voting platform with smart contracts.
-              Ensured transparency and immutability with blockchain technology.
-            </p>
-            <div class="project-tech">
-              <span class="tech-tag">Solidity</span>
-              <span class="tech-tag">Web3.js</span>
-              <span class="tech-tag">Ethereum</span>
-              <span class="tech-tag">IPFS</span>
+    <!-- Contact View -->
+    <article id="contact-view" class="view" role="tabpanel" aria-labelledby="contact-tab">
+      <div class="view-content">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="gradient-text">Let's Connect</span>
+          </h2>
+          <p class="section-subtitle">Open to opportunities and collaborations</p>
+        </div>
+
+        <div class="contact-grid">
+          <a href="mailto:your.email@example.com" class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
             </div>
-            <div class="project-links">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-link">
-                <i class="fab fa-github"></i>
-                <span>Code</span>
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">
-                <i class="fas fa-external-link-alt"></i>
-                <span>Demo</span>
-              </a>
+            <h3>Email</h3>
+            <p>your.email@example.com</p>
+          </a>
+
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">
+              <i class="fab fa-github"></i>
             </div>
-          </div>
-        </article>
+            <h3>GitHub</h3>
+            <p>@yourusername</p>
+          </a>
+
+          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">
+              <i class="fab fa-linkedin"></i>
+            </div>
+            <h3>LinkedIn</h3>
+            <p>/in/yourprofile</p>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span class="gradient-text">Let's Connect</span>
-        </h2>
-        <p class="section-subtitle">Open to opportunities and collaborations</p>
-      </div>
-
-      <div class="contact-grid">
-        <a href="mailto:your.email@example.com" class="contact-card">
-          <div class="contact-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <h3>Email</h3>
-          <p>your.email@example.com</p>
-        </a>
-
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-card">
-          <div class="contact-icon">
-            <i class="fab fa-github"></i>
-          </div>
-          <h3>GitHub</h3>
-          <p>@yourusername</p>
-        </a>
-
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="contact-card">
-          <div class="contact-icon">
-            <i class="fab fa-linkedin"></i>
-          </div>
-          <h3>LinkedIn</h3>
-          <p>/in/yourprofile</p>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 Your Name. Crafted with precision.</p>
-    </div>
-  </footer>
+  </main>
 
   <script src="script.js"></script>
 </body>

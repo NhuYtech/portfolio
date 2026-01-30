@@ -1,129 +1,252 @@
 // ===========================
-// SMOOTH SCROLLING
+// TWO-PHASE VIEW SWITCHING SYSTEM
 // ===========================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
 
-// ===========================
-// NAVBAR SCROLL EFFECT
-// ===========================
-const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
+// Get all navigation links and views
+const navLinks = document.querySelectorAll('.nav-link');
+const views = document.querySelectorAll('.view');
+const ctaButtons = document.querySelectorAll('[data-view]');
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+// Current active view
+let currentView = 'home';
 
-    if (currentScroll > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+// Transition lock to prevent rapid clicks
+let isTransitioning = false;
+
+// Transition duration (must match CSS)
+const TRANSITION_DURATION = 350; // 350ms
+
+/**
+ * Switch to a specific view with two-phase transition
+ * Phase 1: Exit current view
+ * Phase 2: Enter new view
+ * @param {string} viewName - Name of the view to switch to
+ */
+function switchView(viewName) {
+    // Don't switch if already on this view
+    if (currentView === viewName) return;
+
+    // Don't switch if transition is in progress
+    if (isTransitioning) return;
+
+    // Lock transitions
+    isTransitioning = true;
+
+    // Find the views
+    const targetView = document.getElementById(`${viewName}-view`);
+    const currentViewElement = document.getElementById(`${currentView}-view`);
+
+    if (!targetView || !currentViewElement) {
+        isTransitioning = false;
+        return;
     }
 
-    lastScroll = currentScroll;
-});
+    // PHASE 1: Exit current view
+    currentViewElement.classList.add('leaving');
+    currentViewElement.classList.remove('active');
 
-// ===========================
-// ACTIVE SECTION HIGHLIGHTING
-// ===========================
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+    // Wait for exit animation to complete
+    setTimeout(() => {
+        // Remove leaving class and hide completely
+        currentViewElement.classList.remove('leaving');
 
-function highlightNavLink() {
-    const scrollPosition = window.pageYOffset + 150;
+        // PHASE 2: Enter new view
+        targetView.classList.add('active');
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
+        // Update current view
+        currentView = viewName;
 
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
+        // Update navigation active state
+        updateNavigation(viewName);
+
+        // Update URL hash (optional, no page reload)
+        updateHash(viewName);
+
+        // Announce to screen readers
+        announceViewChange(viewName);
+
+        // Unlock transitions after enter animation completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, TRANSITION_DURATION);
+
+    }, TRANSITION_DURATION);
+}
+
+/**
+ * Update navigation active state
+ * @param {string} viewName - Name of the active view
+ */
+function updateNavigation(viewName) {
+    navLinks.forEach(link => {
+        if (link.dataset.view === viewName) {
+            link.classList.add('active');
+            link.setAttribute('aria-selected', 'true');
+        } else {
+            link.classList.remove('active');
+            link.setAttribute('aria-selected', 'false');
         }
     });
 }
 
-// Debounce function
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
+/**
+ * Update URL hash without reload
+ * @param {string} viewName - Name of the view
+ */
+function updateHash(viewName) {
+    if (history.pushState) {
+        history.pushState(null, null, `#${viewName}`);
+    } else {
+        window.location.hash = viewName;
+    }
 }
 
-const debouncedHighlight = debounce(highlightNavLink, 100);
-window.addEventListener('scroll', debouncedHighlight);
+/**
+ * Announce view change to screen readers
+ * @param {string} viewName - Name of the view
+ */
+function announceViewChange(viewName) {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.className = 'sr-only';
+    announcement.textContent = `Switched to ${viewName} view`;
+    document.body.appendChild(announcement);
+
+    setTimeout(() => {
+        document.body.removeChild(announcement);
+    }, 1000);
+}
 
 // ===========================
-// SCROLL REVEAL ANIMATION
+// EVENT LISTENERS
 // ===========================
-const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-};
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            // Add staggered delay for cards
-            setTimeout(() => {
-                entry.target.classList.add('aos-animate');
-            }, index * 100);
+// Navigation link clicks
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const viewName = link.dataset.view;
+        switchView(viewName);
+    });
+});
+
+// CTA button clicks (e.g., "View Projects" button)
+ctaButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const viewName = button.dataset.view;
+        if (viewName) {
+            switchView(viewName);
         }
     });
-}, observerOptions);
-
-// Observe all project cards
-document.querySelectorAll('[data-aos]').forEach(element => {
-    observer.observe(element);
 });
 
 // ===========================
-// GRADIENT ORBS PARALLAX
+// KEYBOARD NAVIGATION
 // ===========================
-const orbs = document.querySelectorAll('.gradient-orb');
 
-window.addEventListener('mousemove', (e) => {
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
+// Arrow key navigation for tabs
+document.addEventListener('keydown', (e) => {
+    // Only handle arrow keys when focus is on nav links
+    if (!document.activeElement.classList.contains('nav-link')) return;
 
-    orbs.forEach((orb, index) => {
-        const speed = (index + 1) * 0.05;
-        const x = (mouseX - 0.5) * 100 * speed;
-        const y = (mouseY - 0.5) * 100 * speed;
+    const currentIndex = Array.from(navLinks).indexOf(document.activeElement);
+    let nextIndex;
 
-        orb.style.transform = `translate(${x}px, ${y}px)`;
-    });
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextIndex = (currentIndex + 1) % navLinks.length;
+        navLinks[nextIndex].focus();
+        switchView(navLinks[nextIndex].dataset.view);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        nextIndex = (currentIndex - 1 + navLinks.length) % navLinks.length;
+        navLinks[nextIndex].focus();
+        switchView(navLinks[nextIndex].dataset.view);
+    } else if (e.key === 'Home') {
+        e.preventDefault();
+        navLinks[0].focus();
+        switchView(navLinks[0].dataset.view);
+    } else if (e.key === 'End') {
+        e.preventDefault();
+        navLinks[navLinks.length - 1].focus();
+        switchView(navLinks[navLinks.length - 1].dataset.view);
+    }
 });
 
 // ===========================
-// SKILL BADGE INTERACTION
+// INITIAL LOAD & HASH HANDLING
 // ===========================
+
+// Handle initial hash on page load
+function handleInitialHash() {
+    const hash = window.location.hash.substring(1); // Remove #
+    const validViews = ['home', 'projects', 'contact'];
+
+    let initialView = 'home';
+    if (hash && validViews.includes(hash)) {
+        initialView = hash;
+    }
+
+    // Directly activate initial view without transition
+    const initialViewElement = document.getElementById(`${initialView}-view`);
+    if (initialViewElement) {
+        initialViewElement.classList.add('active');
+        currentView = initialView;
+        updateNavigation(initialView);
+    }
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    const validViews = ['home', 'projects', 'contact'];
+
+    if (hash && validViews.includes(hash)) {
+        switchView(hash);
+    }
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    handleInitialHash();
+});
+
+// ===========================
+// PREVENT SCROLL (EXTRA SAFETY)
+// ===========================
+
+// Prevent any scroll attempts
+window.addEventListener('scroll', (e) => {
+    window.scrollTo(0, 0);
+});
+
+// Prevent mousewheel scroll
+window.addEventListener('wheel', (e) => {
+    if (e.target.closest('.view-content')) {
+        // Allow scroll within view content
+        return;
+    }
+    e.preventDefault();
+}, { passive: false });
+
+// Prevent touch scroll on body
+document.body.addEventListener('touchmove', (e) => {
+    if (e.target.closest('.view-content')) {
+        // Allow scroll within view content
+        return;
+    }
+    e.preventDefault();
+}, { passive: false });
+
+// ===========================
+// SKILL BADGE INTERACTIONS
+// ===========================
+
 const skillBadges = document.querySelectorAll('.skill-badge');
 
 skillBadges.forEach(badge => {
     badge.addEventListener('mouseenter', function () {
-        // Add subtle scale animation
         this.style.transform = 'translateY(-3px) scale(1.05)';
     });
 
@@ -133,183 +256,55 @@ skillBadges.forEach(badge => {
 });
 
 // ===========================
-// PROJECT CARD TILT EFFECT
+// PROJECT CARD HOVER EFFECTS
 // ===========================
+
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 30;
-        const rotateY = (centerX - x) / 30;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-5px) scale(1.02)';
     });
 
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+    card.addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0) scale(1)';
     });
 });
 
 // ===========================
-// CONTACT CARD GLOW EFFECT
+// ACCESSIBILITY: SCREEN READER ONLY CLASS
 // ===========================
-const contactCards = document.querySelectorAll('.contact-card');
 
-contactCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-    });
-});
-
-// Add glow effect styles
-const style = document.createElement('style');
-style.textContent = `
-    .contact-card::after {
-        content: '';
+// Add screen reader only styles
+const srOnlyStyle = document.createElement('style');
+srOnlyStyle.textContent = `
+    .sr-only {
         position: absolute;
-        top: var(--mouse-y, 50%);
-        left: var(--mouse-x, 50%);
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(102, 126, 234, 0.3), transparent 70%);
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-    }
-    
-    .contact-card:hover::after {
-        opacity: 1;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
     }
 `;
-document.head.appendChild(style);
-
-// ===========================
-// BUTTON RIPPLE EFFECT
-// ===========================
-const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
-
-buttons.forEach(button => {
-    button.addEventListener('click', function (e) {
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple-effect');
-        this.appendChild(ripple);
-
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    });
-});
-
-// Add ripple styles
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-    .ripple-effect {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
-        transform: scale(0);
-        animation: ripple 0.6s ease-out;
-        pointer-events: none;
-    }
-    
-    @keyframes ripple {
-        to {
-            transform: scale(4);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(rippleStyle);
-
-// ===========================
-// CURSOR GLOW TRAIL
-// ===========================
-if (window.innerWidth > 768) {
-    const cursorGlow = document.createElement('div');
-    cursorGlow.className = 'cursor-glow';
-    document.body.appendChild(cursorGlow);
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let glowX = 0;
-    let glowY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    function animateGlow() {
-        glowX += (mouseX - glowX) * 0.1;
-        glowY += (mouseY - glowY) * 0.1;
-
-        cursorGlow.style.left = glowX + 'px';
-        cursorGlow.style.top = glowY + 'px';
-
-        requestAnimationFrame(animateGlow);
-    }
-
-    animateGlow();
-
-    // Add cursor glow styles
-    const cursorStyle = document.createElement('style');
-    cursorStyle.textContent = `
-        .cursor-glow {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.4), transparent 70%);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: screen;
-        }
-    `;
-    document.head.appendChild(cursorStyle);
-}
-
-// ===========================
-// PERFORMANCE OPTIMIZATION
-// ===========================
-// Reduce motion for users who prefer it
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('*').forEach(element => {
-        element.style.animation = 'none';
-        element.style.transition = 'none';
-    });
-}
+document.head.appendChild(srOnlyStyle);
 
 // ===========================
 // CONSOLE MESSAGE
 // ===========================
+
 console.log(
-    '%c✨ Modern Portfolio ✨',
-    'color: #667eea; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);'
+    '%c🚀 Fixed-View Portfolio',
+    'color: #667eea; font-size: 18px; font-weight: bold;'
 );
 console.log(
-    '%cBuilt with modern web technologies',
-    'color: #764ba2; font-size: 14px;'
+    '%cNo scrolling - View switching only',
+    'color: #764ba2; font-size: 12px;'
+);
+console.log(
+    '%cKeyboard navigation: Arrow keys to switch tabs',
+    'color: #4facfe; font-size: 12px;'
 );
