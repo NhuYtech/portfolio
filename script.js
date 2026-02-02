@@ -181,7 +181,7 @@ document.addEventListener('keydown', (e) => {
 // Handle initial hash on page load
 function handleInitialHash() {
     const hash = window.location.hash.substring(1); // Remove #
-    const validViews = ['home', 'projects', 'contact'];
+    const validViews = ['home', 'portfolio', 'about'];
 
     let initialView = 'home';
     if (hash && validViews.includes(hash)) {
@@ -200,7 +200,7 @@ function handleInitialHash() {
 // Handle browser back/forward buttons
 window.addEventListener('hashchange', () => {
     const hash = window.location.hash.substring(1);
-    const validViews = ['home', 'projects', 'contact'];
+    const validViews = ['home', 'portfolio', 'about'];
 
     if (hash && validViews.includes(hash)) {
         switchView(hash);

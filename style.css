@@ -532,6 +532,7 @@ body {
     gap: 2rem;
     max-width: 900px;
     width: 100%;
+    margin-top: 3rem;
 }
 
 .contact-card {
