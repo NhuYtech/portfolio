@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-export type View = 'home' | 'portfolio' | 'about';
+export type View = 'about' | 'experience' | 'projects' | 'education' | 'skills' | 'contact';
 
-const VALID_VIEWS: View[] = ['home', 'portfolio', 'about'];
+const VALID_VIEWS: View[] = ['about', 'experience', 'projects', 'education', 'skills', 'contact'];
 const TRANSITION_DURATION = 350; // must match CSS transition duration
 
 function isValidView(value: string): value is View {
@@ -20,7 +20,7 @@ export function useViewSwitcher(): UseViewSwitcherReturn {
     const [currentView, setCurrentView] = useState<View>(() => {
         // Initialise from URL hash so the first render is already correct
         const hash = window.location.hash.substring(1);
-        return isValidView(hash) ? hash : 'home';
+        return isValidView(hash) ? hash : 'about';
     });
     const [leavingView, setLeavingView] = useState<View | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);

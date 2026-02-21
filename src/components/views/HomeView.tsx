@@ -41,7 +41,7 @@ export default function HomeView({ viewState, switchView }: HomeViewProps) {
                     </div>
 
                     <div className="hero-cta">
-                        <button className="btn-primary" onClick={() => switchView('portfolio')}>
+                        <button className="btn-primary" onClick={() => switchView('projects')}>
                             <span>View Projects</span>
                             <i className="fas fa-arrow-right" aria-hidden="true" />
                         </button>

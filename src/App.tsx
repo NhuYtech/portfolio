@@ -3,9 +3,9 @@ import { useViewSwitcher, type View } from './hooks/useViewSwitcher';
 import { useScrollPrevention } from './hooks/useScrollPrevention';
 import BackgroundLayer from './components/BackgroundLayer';
 import Navbar from './components/Navbar';
-import HomeView from './components/views/HomeView';
-import PortfolioView from './components/views/PortfolioView';
 import AboutView from './components/views/AboutView';
+import ProjectsView from './components/views/ProjectsView';
+import ContactView from './components/views/ContactView';
 
 type ViewState = 'active' | 'leaving' | 'hidden';
 
@@ -29,12 +29,12 @@ function App() {
       <Navbar currentView={currentView} switchView={switchView} />
 
       <main className="content-container">
-        <HomeView
-          viewState={getViewState('home')}
+        <AboutView
+          viewState={getViewState('about')}
           switchView={switchView}
         />
-        <PortfolioView viewState={getViewState('portfolio')} />
-        <AboutView viewState={getViewState('about')} />
+        <ProjectsView viewState={getViewState('projects')} />
+        <ContactView viewState={getViewState('contact')} />
       </main>
 
       {/* Live region for screen reader announcements */}

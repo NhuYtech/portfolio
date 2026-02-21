@@ -7,9 +7,12 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS: { label: string; view: View }[] = [
-    { label: 'Home', view: 'home' },
-    { label: 'Portfolio', view: 'portfolio' },
     { label: 'About', view: 'about' },
+    { label: 'Experience', view: 'experience' },
+    { label: 'Projects', view: 'projects' },
+    { label: 'Education', view: 'education' },
+    { label: 'Skills', view: 'skills' },
+    { label: 'Contact', view: 'contact' },
 ];
 
 export default function Navbar({ currentView, switchView }: NavbarProps) {
