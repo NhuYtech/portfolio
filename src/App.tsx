@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCallback } from 'react';
+import { useViewSwitcher, type View } from './hooks/useViewSwitcher';
+import { useScrollPrevention } from './hooks/useScrollPrevention';
+import BackgroundLayer from './components/BackgroundLayer';
+import Navbar from './components/Navbar';
+import HomeView from './components/views/HomeView';
+import PortfolioView from './components/views/PortfolioView';
+import AboutView from './components/views/AboutView';
+
+type ViewState = 'active' | 'leaving' | 'hidden';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { currentView, leavingView, switchView } = useViewSwitcher();
+  useScrollPrevention();
+
+  const getViewState = useCallback(
+    (view: View): ViewState => {
+      if (currentView === view) return 'active';
+      if (leavingView === view) return 'leaving';
+      return 'hidden';
+    },
+    [currentView, leavingView]
+  );
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BackgroundLayer />
+
+      <Navbar currentView={currentView} switchView={switchView} />
+
+      <main className="content-container">
+        <HomeView
+          viewState={getViewState('home')}
+          switchView={switchView}
+        />
+        <PortfolioView viewState={getViewState('portfolio')} />
+        <AboutView viewState={getViewState('about')} />
+      </main>
+
+      {/* Live region for screen reader announcements */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+        id="view-announcer"
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
