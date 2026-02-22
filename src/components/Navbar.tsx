@@ -58,9 +58,14 @@ export default function Navbar({ currentView, switchView }: NavbarProps) {
     return (
         <nav className="navbar" role="navigation" aria-label="Main navigation">
             <div className="nav-container">
-                <a href="#home" className="nav-logo" aria-label="Home">
-                    Portfolio
-                </a>
+                <div className="nav-profile">
+                    <img
+                        src="/avatar-placeholder.jpg"
+                        alt="Huynh Nhu Y"
+                        className="nav-avatar"
+                    />
+                    <span className="nav-name">Huynh Nhu Y</span>
+                </div>
                 <ul className="nav-menu" role="tablist">
                     {NAV_ITEMS.map(({ label, view }, index) => (
                         <li key={view} role="presentation">
