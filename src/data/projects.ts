@@ -37,26 +37,25 @@ export const projects: Project[] = [
         ],
     },
     {
-        id: 'collab-editor',
+        id: 'ctut-youth-management',
         // number: '02',
-        title: 'Collaborative Code Editor',
+        title: 'CTUT Youth Union Management System',
         description:
-            'Real-time collaborative coding platform with WebSocket integration and syntax highlighting.',
-        tech: ['Next.js', 'WebSocket', 'Monaco', 'Redis'],
-        links: [
-            { label: 'Code', href: 'https://github.com', icon: 'fab fa-github' },
-            { label: 'Demo', href: '#', icon: 'fas fa-external-link-alt' },
+            'A web-based management system for tracking Youth Union members, activities, attendance, and union fees at CTUT. The platform improves administrative efficiency through role-based access, reporting, and centralized data management.',
+        tech: [
+            'PHP',
+            'Symfony',
+            'Twig',
+            'Bootstrap',
+            'MySQL',
+            'Doctrine ORM',
         ],
-    },
-    {
-        id: 'ecommerce-microservices',
-        // number: '03',
-        title: 'E-Commerce Microservices',
-        description:
-            'Scalable microservices architecture handling 50K+ daily transactions with event-driven design.',
-        tech: ['Node.js', 'Kubernetes', 'PostgreSQL', 'RabbitMQ'],
         links: [
-            { label: 'Code', href: 'https://github.com', icon: 'fab fa-github' },
+            {
+                label: 'Code',
+                href: 'https://github.com/NhuYtech/Quanlydoanvien_CTUT',
+                icon: 'fab fa-github',
+            },
         ],
     },
     {
