@@ -6,7 +6,7 @@ export interface ProjectLink {
 
 export interface Project {
     id: string;
-    number: string;
+    // number: string;
     title: string;
     description: string;
     tech: string[];
@@ -15,20 +15,30 @@ export interface Project {
 
 export const projects: Project[] = [
     {
-        id: 'ai-analytics',
-        number: '01',
-        title: 'AI Analytics Platform',
+        id: 'thien-an-funi',
+        // number: '01',
+        title: 'Thiên Ân Funi – Furniture E-commerce System',
         description:
-            'Real-time data visualization dashboard with ML insights processing 10M+ events daily.',
-        tech: ['React', 'Python', 'TensorFlow', 'AWS'],
+            'E-commerce system developed for Thiên Ân furniture store in Can Tho. Features include product management, order processing, role-based authentication (Admin, SaleStaff, Customer), inventory tracking, and a real-time admin dashboard.',
+        tech: [
+            'ASP.NET Core MVC',
+            'C#',
+            'Entity Framework Core',
+            'SQL Server',
+            'Bootstrap',
+            'JavaScript',
+        ],
         links: [
-            { label: 'Code', href: 'https://github.com', icon: 'fab fa-github' },
-            { label: 'Demo', href: '#', icon: 'fas fa-external-link-alt' },
+            {
+                label: 'Code',
+                href: 'https://github.com/NhuYtech/ThienAnFuni',
+                icon: 'fab fa-github',
+            },
         ],
     },
     {
         id: 'collab-editor',
-        number: '02',
+        // number: '02',
         title: 'Collaborative Code Editor',
         description:
             'Real-time collaborative coding platform with WebSocket integration and syntax highlighting.',
@@ -40,7 +50,7 @@ export const projects: Project[] = [
     },
     {
         id: 'ecommerce-microservices',
-        number: '03',
+        // number: '03',
         title: 'E-Commerce Microservices',
         description:
             'Scalable microservices architecture handling 50K+ daily transactions with event-driven design.',
@@ -51,7 +61,7 @@ export const projects: Project[] = [
     },
     {
         id: 'devops-suite',
-        number: '04',
+        // number: '04',
         title: 'DevOps Automation Suite',
         description:
             'Infrastructure automation reducing deployment time by 70% with comprehensive monitoring.',
