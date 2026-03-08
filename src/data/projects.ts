@@ -59,14 +59,25 @@ export const projects: Project[] = [
         ],
     },
     {
-        id: 'devops-suite',
-        // number: '04',
-        title: 'DevOps Automation Suite',
+        id: 'motorbike-paint-warehouse',
+        // number: '03',
+        title: 'Motorbike Paint Warehouse Management App',
         description:
-            'Infrastructure automation reducing deployment time by 70% with comprehensive monitoring.',
-        tech: ['Python', 'Terraform', 'Jenkins', 'Prometheus'],
+            'Mobile application for managing inventory and order workflows at a motorbike paint workshop in Can Tho. The system tracks order status, internal notes, and delivery progress while providing real-time notifications to partner stores.',
+        tech: [
+            'Flutter',
+            'Dart',
+            'Firebase',
+            'Firebase Auth',
+            'Firestore',
+            'Material Design',
+        ],
         links: [
-            { label: 'Code', href: 'https://github.com', icon: 'fab fa-github' },
+            {
+                label: 'Code',
+                href: 'https://github.com/NhuYtech/MotorbikePaintManager',
+                icon: 'fab fa-github',
+            },
         ],
     },
 ];
