@@ -60,7 +60,7 @@ export default function Navbar({ currentView, switchView }: NavbarProps) {
             <div className="nav-container">
                 <div className="nav-profile">
                     <img
-                        src="/avatar-placeholder.jpg"
+                        src="/avt.png"
                         alt="Huynh Nhu Y"
                         className="nav-avatar"
                     />

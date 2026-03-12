@@ -309,11 +309,10 @@ body {
     height: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 2rem 2rem;
-    /* extra top padding so content never hugs the navbar */
+    padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     overflow-y: auto;
     overflow-x: hidden;
@@ -336,6 +335,44 @@ body {
 /* ===========================
    HOME VIEW (HERO)
    =========================== */
+/* Two-column hero layout */
+.hero-layout {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.hero-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.hero-right {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-avatar {
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid transparent;
+    background:
+        linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box,
+        linear-gradient(135deg, var(--gradient-start), var(--gradient-end)) border-box;
+    box-shadow: 0 0 80px rgba(102, 126, 234, 0.3);
+}
+
+/* Legacy centred variant kept for any other use */
 .hero-content {
     text-align: center;
     max-width: 900px;
@@ -381,9 +418,16 @@ body {
     color: var(--text-secondary);
     line-height: 1.8;
     margin-bottom: var(--spacing-lg);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 560px;
+}
+
+/* Left-align skills and CTA inside hero-left */
+.hero-left .skills-grid {
+    justify-content: flex-start;
+}
+
+.hero-left .hero-cta {
+    justify-content: flex-start;
 }
 
 .skills-grid {
@@ -639,6 +683,19 @@ body {
 /* ===========================
    RESPONSIVE
    =========================== */
+
+/* Tablet — keep two-column layout, reduce avatar */
+@media (max-width: 1024px) {
+    .hero-layout {
+        gap: 2.5rem;
+    }
+
+    .hero-avatar {
+        width: 320px;
+        height: 320px;
+    }
+}
+
 @media (max-width: 768px) {
 
     /* Shrink navbar height on mobile — content-container updates automatically */
@@ -658,8 +715,32 @@ body {
         padding: 1.5rem;
     }
 
+    /* Stack hero columns vertically on mobile */
+    .hero-layout {
+        flex-direction: column-reverse;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .hero-left {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-left .skills-grid,
+    .hero-left .hero-cta {
+        justify-content: center;
+    }
+
+    .hero-avatar {
+        width: 240px;
+        height: 240px;
+    }
+
     .hero-summary {
         font-size: 1rem;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .skills-grid {
