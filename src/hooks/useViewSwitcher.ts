@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-export type View = 'about' | 'experience' | 'projects' | 'education' | 'skills' | 'contact';
+export type View = 'about' | /* 'experience' | */ 'projects' | 'education' | 'skills' | 'contact';
 
-const VALID_VIEWS: View[] = ['about', 'experience', 'projects', 'education', 'skills', 'contact'];
+const VALID_VIEWS: View[] = ['about', /* 'experience', */ 'projects', 'education', 'skills', 'contact'];
 const TRANSITION_DURATION = 350; // must match CSS transition duration
 
 function isValidView(value: string): value is View {

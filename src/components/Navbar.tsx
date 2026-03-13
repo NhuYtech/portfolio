@@ -8,7 +8,7 @@ interface NavbarProps {
 
 const NAV_ITEMS: { label: string; view: View }[] = [
     { label: 'About', view: 'about' },
-    { label: 'Experience', view: 'experience' },
+    // { label: 'Experience', view: 'experience' },
     { label: 'Projects', view: 'projects' },
     { label: 'Education', view: 'education' },
     { label: 'Skills', view: 'skills' },
